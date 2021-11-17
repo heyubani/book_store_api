@@ -53,8 +53,17 @@ const addBook = (body, userId) => {
   return db.any(queries.userbook, payload);
 };
 
-const getBooks = () => db.any(queries.getBooks);
+const getBooks = (userId) => {
+  return db.any(queries.getBooks, [userId]);
+};
 
+const getSinglBook = (userId) => {
+  return db.any(queries.getSinglBook, [userId]);
+};
+
+const removeBook = (userId) => {
+  return db.any(queries.removeBook, [userId]);
+};
 module.exports = {
   createUser,
   validatePassword,
@@ -62,4 +71,6 @@ module.exports = {
   updatePassword,
   getBooks,
   addBook,
+  getSinglBook,
+  removeBook
 };

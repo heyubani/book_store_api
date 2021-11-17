@@ -15,21 +15,31 @@ const queries = {
         WHERE email=$1
     `,
 
-  getUserById: `
-    SELECT * FROM users
-    WHERE id=$1
-    `,
+  userbook: `
+    INSERT INTO userbooks(
+      title,
+      author,
+      user_id
+      ) VALUES($1, $2, $3)
+      RETURNING *
+      `,
 
   getBooks: `
+      SELECT * FROM userbooks
+      WHERE user_id=$1
+      `,
+
+  getSinglBook: `
+      SELECT * FROM userbooks
+      WHERE user_id=$1 AND id =$2
+      `,
+  removeBook: `
+      SELECT * FROM userbooks
+      WHERE user_id=$1 AND id =$2
+      `,
+  getUserById: `
     SELECT * FROM userbooks
-    `,
-  userbook: `
-      INSERT INTO userbooks(
-        title,
-        author,
-        user_id
-     ) VALUES($1, $2, $3)
-     RETURNING *
+    WHERE id=$1
     `,
 };
 module.exports = queries;

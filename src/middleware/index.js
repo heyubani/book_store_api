@@ -1,18 +1,10 @@
 const { getUser } = require("../services");
 const jwt = require("jsonwebtoken");
 
-const checkUser = () => async (req, res, next) => {
+const checkUser = async (email) =>{
   try {
-    const { email } = req.body;
     const [user] = await getUser(email);
-    if (!user) {
-      return res.status(400).json({
-        status: "fail",
-        message: "Invalid credentials",
-        data: [],
-      });
-    }
-    next();
+    return user;
   } catch (error) {
     return next(error);
   }
