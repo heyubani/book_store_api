@@ -25,15 +25,18 @@ const validatePassword = async (email, password) => {
 
   if (user.length === 1) {
     const isValid = await comparePassword(password, user[0].password);
-      if (isValid) {
-        const token = await generateToken(user[0]);
-        return token ;
-      }
+    const userdata = user[0];
+    console.log(userdata);
+    if (isValid) {
+      const token = await generateToken({
+        id: userdata.id,
+        role: userdata.role,
+      });
+      return token;
     }
+  }
   return false;
 };
-
-
 
 const updatePassword = async (req) => {
   const {
@@ -41,15 +44,22 @@ const updatePassword = async (req) => {
     user: { id },
   } = req;
   const encryptedPassword = await hashPassword(password);
-  return db.one(queries.updatePassword, [encryptedPassword, id]);
+  return db.any(queries.updatePassword, [encryptedPassword, id]);
 };
 
-const getBooks = () => db.any(queries.getBooks)
+const addBook = (body, userId) => {
+  const { title, author } = body;
+  const payload = [title, author, userId];
+  return db.any(queries.userbook, payload);
+};
+
+const getBooks = () => db.any(queries.getBooks);
 
 module.exports = {
   createUser,
   validatePassword,
   getUser,
   updatePassword,
-  getBooks
+  getBooks,
+  addBook,
 };

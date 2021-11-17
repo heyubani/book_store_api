@@ -1,5 +1,5 @@
 const queries = {
-    addNewUser: `
+  addNewUser: `
         INSERT INTO users (
             first_name,
             last_name,
@@ -10,20 +10,26 @@ const queries = {
         RETURNING *
     `,
 
-    getUser: `
+  getUser: `
         SELECT * FROM users
         WHERE email=$1
     `,
 
-    getUserById: `
+  getUserById: `
     SELECT * FROM users
     WHERE id=$1
     `,
 
-    getBooks: `
+  getBooks: `
     SELECT * FROM userbooks
-    `
-
-}
-
-module.exports = queries
+    `,
+  userbook: `
+      INSERT INTO userbooks(
+        title,
+        author,
+        user_id
+     ) VALUES($1, $2, $3)
+     RETURNING *
+    `,
+};
+module.exports = queries;

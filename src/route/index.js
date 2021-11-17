@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { validateUser, checkUser, verifyToken } = require("../middleware");
 const { createNewUser, loginUser } = require("../controller/index");
+const { createBook } = require("../controller/book");
 const { createUserSchema, loginUserSchema } = require("../validation");
 
 router.post(
@@ -18,7 +19,7 @@ router.post(
   loginUser
 );
 
-router.post("/api/book", verifyToken)
-  .get(".api/book");
+router.post("/api/book", verifyToken(), createBook);
+
 
 module.exports = router

@@ -1,18 +1,18 @@
-
+const { addBook } = require("../services");
 
 const createBook = async (req, res, next) => {
+  console.log(req.token);
   try {
-    const {title, description,  } = req.body;
-    const newUser = await createUser(body);
+    const newUser = await addBook(req.body, req.token.id);
     console.log(newUser);
-    const { password, ...user } = newUser;
 
     res.status(201).json({
       status: "success",
       message: `created successfully`,
-      data: user,
+      data: newUser,
     });
   } catch (error) {
     next(error);
   }
 };
+module.exports = { createBook };

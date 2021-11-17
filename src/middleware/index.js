@@ -20,37 +20,25 @@ const checkUser = () => async (req, res, next) => {
 
 // verify token
 const verifyToken = () => async (req, res, next) => {
-      console.log(token, "--------------------");
-
   try {
-     const token = req.headers["x-access-token"] || req.query.token;
+    const token = req.headers["x-access-token"] || req.query.token;
+
     if (!token)
       return res.status(403).json({
         status: "fail",
         message: "No token provided.",
       });
+       
 
     const tokenValidated =  jwt.verify(token, process.env.RESET_TOKEN_KEY)
-    console.log(tokenValidated, '--------------------');
-
-    if (tokenValidated.message) {
-      return res.status(403).json({
-        status: "fail",
-        message: tokenValidated.message,
-      });
-    }
-    const { email, id } = tokenValidated;
-    const [user] = await getUser(email);
-
-    if (!user) {
+    if (!tokenValidated) {
       return res.status(403).json({
         status: "fail",
         message: "Failed to authenticate token.",
       });
     }
 
-    delete user.password;
-    req.user = user;
+    req.token = tokenValidated;
     return next();
   } catch (err) {
     next(err);
